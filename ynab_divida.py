@@ -12,13 +12,17 @@ if len(sys.argv) == 7:
     total_parcelas=int(sys.argv[4])
     data_parcela=datetime.datetime.strptime(sys.argv[5], '%d/%m/%Y').date()
     valor=Decimal(sys.argv[6])
+    total_juros=Decimal(sys.argv[7])
 else:
     payee=input("Payee: ")
-    categoria=input("Categoria: ")
+    categoria=input("Categoria (Outros : Outros Gastos): ")
+    if categoria=="":
+        categoria="Outros : Outros Gastos"
     descricao=input("Descrição: ")
     total_parcelas=int(input("Total Parcelas: "))
     data_parcela=datetime.datetime.strptime(input("Data (dd/mm/yyyy): "), '%d/%m/%Y').date()
     valor=Decimal(input("Valor parcela: "))
+    total_juros=Decimal(input("Total Juros: "))
 
 def add_months(sourcedate,months):
     month = sourcedate.month - 1 + months
@@ -42,6 +46,8 @@ while i < total_parcelas:
         nova_data = add_months(nova_data, 1)
 
     output.write(nova_data.strftime('%d/%m/%Y') + "," + payee + "," + categoria + "," + descricao + " - Parcela " + str(i) + " de " + str(total_parcelas) + "," + str(valor) + ",\n")
+
+output.write(nova_data.strftime('%d/%m/%Y') + "," + payee + ",Income: Available this month," + descricao + " - Juros,," + str(total_juros) + "\n")
 
 output.close()
 print(output_file)
